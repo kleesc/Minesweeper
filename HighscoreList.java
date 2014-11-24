@@ -2,10 +2,34 @@ import java.util.*;
 import java.io.*;
 
 public class HighscoreList implements Serializable {
-    List<Highscore> list;
-
+    private PriorityQueue<Highscore> scores;
+    private Comparator<Highscore> scoreComparator = new Comparator<Highscore>() {
+        @Override
+        public int compare(Highscore s1, Highscore s2) {
+            return s2.getScore() - s1.getScore();
+        }
+    };
+    
     public HighscoreList() {
-        list = new ArrayList<Highscore>();
+        scores = new PriorityQueue<Highscore> (10, scoreComparator);
+    }
+
+    public void add(String name, int score) {
+        this.scores.add(new Highscore(name, score));
+    }
+
+    public Highscore peek() {
+        return this.scores.peek();
+    }
+
+    public void clear() {
+        this.scores.clear();
+    }
+
+    public Highscore[] getTopScores() {
+        Highscore topScores[] = scores.toArray(new Highscore[scores.size()]);
+        Arrays.sort(topScores, scoreComparator);
+        return topScores;
     }
 
     class Highscore {
