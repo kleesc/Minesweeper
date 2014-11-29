@@ -48,6 +48,10 @@ public class MineSweeperGame {
     public int[][] getMineField() {
         return mineField;
     }
+    
+    public int getSquare(int i, int j) {
+    	return mineField[i][j];
+    }
 
     public int getRows() {
         return mineField.length;

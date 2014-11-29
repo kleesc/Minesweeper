@@ -112,11 +112,18 @@ public class MineSweeper extends JFrame {
                     }
                 }
             });
-        // Add ActionListener to item
         menu.add(itm);
 
         menuBar.add(menu);
         setJMenuBar(menuBar);
+    }
+
+    public static void save() {
+
+    }
+
+    public static void load() {
+
     }
 
     public void run() {   
