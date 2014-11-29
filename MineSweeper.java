@@ -52,7 +52,11 @@ public class MineSweeper extends JFrame {
         // Add ActionListener to item
         menu.add(itm);
         itm = new JMenuItem("Exit");
-        // Add ActionListener to item
+        itm.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	System.exit(0);
+            }
+        });
         menu.add(itm);
         menuBar.add(menu);
 
