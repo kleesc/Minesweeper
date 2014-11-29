@@ -20,17 +20,19 @@ public class MinePane extends JPanel {
         for(int i = 0; i < mineField.length; i++) {
             for(int j = 0; j < mineField[i].length; j++) {
                 grid[i][j] = new JButton();
-                grid[i][j].addActionListener(new ButtonClick(currentGame.getSquare(i,j)));
+                grid[i][j].addActionListener(new ButtonClick(currentGame, i, j));
                 add(grid[i][j]);
             }
         }
     }
     
     public class ButtonClick implements ActionListener {
-    	private int square;
+    	private int i;
+    	private int j;
     	
-    	public ButtonClick(int square) {
-    		this.square = square;
+    	public ButtonClick(MineSweeperGame currentGame, int i, int j) {
+    		this.i = i;
+    		this.j = j;
     	}
     	
         public void actionPerformed(ActionEvent e) {
@@ -39,7 +41,7 @@ public class MinePane extends JPanel {
             if(e.getSource() instanceof JButton) {
                 JButton btn = (JButton) e.getSource();
                 btn.setBackground(Color.RED);
-                btn.setText(Integer.toString(square));
+                btn.setText(Integer.toString(currentGame.getSquare(i, j)));
                 
             }
         }
