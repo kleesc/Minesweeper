@@ -6,13 +6,15 @@ import java.awt.event.*;
 public class MinePane extends JPanel {
     private JButton grid[][];
     private MineSweeperGame currentGame;
+    private int rows;
+    private int columns;
+    private boolean pressed[][];
 
     public MinePane(MineSweeperGame currentGame) {
         this.currentGame = currentGame;
-
-        int rows = currentGame.getRows();
-        int columns = currentGame.getColumns();
-        
+        rows = currentGame.getRows();
+        columns = currentGame.getColumns();
+        pressed = new boolean[rows][columns];
         setLayout(new GridLayout(rows, columns));
 
         int mineField[][] = currentGame.getMineField();
@@ -42,7 +44,26 @@ public class MinePane extends JPanel {
                 JButton btn = (JButton) e.getSource();
                 btn.setBackground(Color.RED);
                 btn.setText(Integer.toString(currentGame.getSquare(i, j)));
-                
+                if(currentGame.getSquare(i, j) == 0 && pressed[i][j] == false) {
+                	pressed[i][j] = true;
+                	if(i + 1 < rows)
+                		grid[i + 1][j].doClick();
+                	if(j + 1 < columns)
+                		grid[i][j + 1].doClick();
+                	if(i - 1 >= 0)
+                		grid[i - 1][j].doClick();
+                	if(j - 1 >= 0)
+                		grid[i][j - 1].doClick();
+                	if(i + 1 < rows && j + 1 < columns)
+                		grid[i + 1][j + 1].doClick();
+                	if(i + 1 < rows && j - 1 >= 0)
+                		grid[i + 1][j - 1].doClick();
+                	if(i - 1 >= 0 && j + 1 < columns)
+                		grid[i - 1][j + 1].doClick();
+                	if(i - 1 >= 0 && j - 1 >= 0)
+                		grid[i - 1][j - 1].doClick();
+                }
+                pressed[i][j] = true;
             }
         }
     }
