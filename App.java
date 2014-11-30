@@ -1,3 +1,11 @@
+/**
+ * App --- An upgraded version of the original Minesweeper game in which there can be more than one bomb 
+ * on the same square in the field and the possibility of the player to get a reward by finding a tresure while clearing the field.
+ *@author Kenny Lee Sin Cheong
+ *@author Mathieu Wrzesien
+ *@author Leo Tan Trung Nguyen
+ *
+ */
 import java.util.*;
 
 public class App {
