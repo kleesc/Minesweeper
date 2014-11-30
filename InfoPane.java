@@ -1,6 +1,7 @@
 import javax.swing.*;
+import java.io.*;
 
-public class InfoPane extends JPanel {
+public class InfoPane extends JPanel implements Serializable {
     private MineSweeperGame currentGame;
     private JLabel lives;
     private JLabel size;

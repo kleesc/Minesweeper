@@ -1,6 +1,7 @@
 import java.lang.Math;
+import java.io.*;
 
-public class MineSweeperGame {
+public class MineSweeperGame implements Serializable {
     private int mineField[][];
     private int lives;
     private int score;

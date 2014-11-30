@@ -2,8 +2,9 @@ import javax.swing.*;
 import java.awt.GridLayout;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 
-public class MinePane extends JPanel {
+public class MinePane extends JPanel implements Serializable {
     private JButton grid[][];
     private MineSweeperGame currentGame;
     private int rows;

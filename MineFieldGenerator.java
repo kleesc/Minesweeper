@@ -48,7 +48,7 @@ public class MineFieldGenerator {
             numMines--;
         }
         
-        fill(field);
+        // fill(field);
         return field;
     }
 
@@ -155,7 +155,7 @@ public class MineFieldGenerator {
 
     /* For testing purposes */
     public static void main(String[] args) {
-        int f[][] = generate(4,4);
+        int f[][] = generate(9,9);
         for(int i = 0; i < f.length; i++) {
             for(int j = 0; j < f[i].length; j++) {
                 System.out.print(f[i][j] + " |  ");

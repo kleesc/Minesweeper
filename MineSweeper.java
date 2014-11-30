@@ -1,11 +1,12 @@
 import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.event.*;
+import java.io.*;
 
 /*
  * Main window
  */
-public class MineSweeper extends JFrame {
+public class MineSweeper extends JFrame implements Serializable {
     private MineSweeperGame game;
     private InfoPane info;
     private MinePane grid;
@@ -13,7 +14,7 @@ public class MineSweeper extends JFrame {
     public MineSweeper(int rows, int columns, int mines) {
         init();
 
-        game = new MineSweeperGame();
+        game = new MineSweeperGame(rows, columns, mines);
         info = new InfoPane(game);
         grid = new MinePane(game);
 
@@ -66,15 +67,19 @@ public class MineSweeper extends JFrame {
                                 columns = Integer.parseInt(field2.getText());
                                 mines = Integer.parseInt(field3.getText());
                                 valid = true;
-
-                                getContentPane().remove(grid);
-                                getContentPane().invalidate();
-                                getContentPane().add(grid = new MinePane(new MineSweeperGame(30,30)));
-                                getContentPane().revalidate();
                                 
+                                // clear();
+                                // MineSweeper newGame =  new MineSweeper(rows, columns, mines);
+                                // MineSweeper.this.game = newGame.getMineSweeperGame();
+                                // MineSweeper.this.grid = newGame.getMinePane();
+                                // MineSweeper.this.info = newGame.getInfoPane();
+                                // getContentPane().add(MineSweeper.this.grid);
+                                // getContentPane().add(MineSweeper.this.info, BorderLayout.EAST);
+                                // getContentPane().revalidate();
+
                             } catch (NumberFormatException ex) {
                                 JOptionPane.showMessageDialog(null, "Enter 3 Integers");
-                            }
+                            } 
                         } else {
                             break;
                         }
@@ -87,7 +92,7 @@ public class MineSweeper extends JFrame {
         itm = new JMenuItem("Save");
         itm.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    
+                    MineSweeper.save(MineSweeper.this);
                 }
             });
         menu.add(itm);
@@ -96,7 +101,20 @@ public class MineSweeper extends JFrame {
         itm = new JMenuItem("Load");
         itm.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    
+                    if(MineSweeper.load() == null) {
+                        JOptionPane.showMessageDialog(null, "Failed to load game");
+                    } else {
+                        
+                        getContentPane().remove(grid);
+                        getContentPane().remove(info);
+                        MineSweeper loadedGame = MineSweeper.load();
+                        MineSweeper.this.game = loadedGame.getMineSweeperGame();
+                        MineSweeper.this.info = loadedGame.getInfoPane();
+                        MineSweeper.this.grid = loadedGame.getMinePane();
+                        getContentPane().add(grid);
+                        getContentPane().add(info, BorderLayout.EAST);
+                        getContentPane().revalidate();
+                    }
                 }
             });
         menu.add(itm);
@@ -118,15 +136,71 @@ public class MineSweeper extends JFrame {
         setJMenuBar(menuBar);
     }
 
-    public static void save() {
-
+    public static void save(MineSweeper currentGame) {
+        String path = JOptionPane.showInputDialog("Enter file name: ");
+                
+        if(path != null) {
+            try {
+                ObjectOutputStream out = 
+                    new ObjectOutputStream(new FileOutputStream(new File(path)));
+                out.writeObject(currentGame);
+            }
+            catch(FileNotFoundException e) {
+                System.out.println("No previous state found, will create new file on save.");
+                // e.printStackTrace();
+            }
+            catch(IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-    public static void load() {
+    public static MineSweeper load() {
+        JFileChooser chooser = new JFileChooser();
+        int returnVal = chooser.showOpenDialog(null);
+        
+        if(returnVal == JFileChooser.APPROVE_OPTION) {  
+            String path = chooser.getSelectedFile().getName();
+            try(
+                FileInputStream f = new FileInputStream(path);
+                ObjectInput input = new ObjectInputStream (f);
+                ) {
+                    return (MineSweeper)input.readObject();
+                }
+            catch(ClassNotFoundException e) {
+                System.out.println("Class not found.");
+                // e.printStackTrace();
+            }
+            catch(FileNotFoundException e) {
+                System.out.println("No previous state found, will create new file on save.");
+                // e.printStackTrace();
+            }
+            catch(IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
 
+    public void clear() {
+        getContentPane().remove(grid);
+        getContentPane().remove(info);
+        getContentPane().invalidate();
     }
 
     public void run() {   
         setVisible(true);
+    }
+
+    public MineSweeperGame getMineSweeperGame() {
+        return game;
+    }
+
+    public MinePane getMinePane() {
+        return grid;
+    }
+
+    public InfoPane getInfoPane() {
+        return info;
     }
 }
