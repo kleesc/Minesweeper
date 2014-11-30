@@ -89,7 +89,7 @@ public class MineFieldGenerator {
                                     Math.abs(field[i-1][j+1]) : 0) + 
                                    ((field[i][j+1] < 0) ?
                                     Math.abs(field[i][j+1]) : 0));
-                } else if(j == 0) { // Left edge
+                } else if(j == 0 && i > 0 && i < field.length - 1) { // Left edge
                     field[i][j] = (((field[i-1][j] < 0) ? 
                                     Math.abs(field[i-1][j]) : 0) +
                                    ((field[i-1][j+1] < 0) ?
@@ -100,7 +100,7 @@ public class MineFieldGenerator {
                                     Math.abs(field[i+1][j+1]) : 0) +
                                    ((field[i+1][j] < 0) ?
                                     Math.abs(field[i+1][j]) : 0));
-                } else if(j == field[i].length - 1) { // Right edge
+                } else if(j == field[i].length - 1 && i > 0 && i < field.length - 1) { // Right edge
                     field[i][j] = (((field[i-1][j] < 0) ? 
                                     Math.abs(field[i-1][j]) : 0) +
                                    ((field[i-1][j-1] < 0) ?
@@ -108,10 +108,10 @@ public class MineFieldGenerator {
                                    ((field[i][j-1] < 0) ?
                                     Math.abs(field[i][j-1]) : 0) +
                                    ((field[i+1][j-1] < 0) ?
-                                    Math.abs(field[i+1][j]) : 0) +
+                                    Math.abs(field[i+1][j-1]) : 0) +
                                    ((field[i+1][j] < 0) ?
                                     Math.abs(field[i+1][j]) : 0));
-                } else if(i == 0) { // Top edge
+                } else if(i == 0 && j > 0 && j < field[i].length - 1) { // Top edge
                     field[i][j] = (((field[i][j-1] < 0) ? 
                                     Math.abs(field[i][j-1]) : 0) +
                                    ((field[i+1][j-1] < 0) ?
@@ -122,7 +122,7 @@ public class MineFieldGenerator {
                                     Math.abs(field[i+1][j+1]) : 0) +
                                    ((field[i][j+1] < 0) ?
                                     Math.abs(field[i][j+1]) : 0));
-                } else if(i == field.length - 1) { // Bottom edge
+                } else if(i == field.length - 1 && j > 0 && j < field[i].length - 1) { // Bottom edge
                     field[i][j] = (((field[i][j-1] < 0) ? 
                                     Math.abs(field[i][j-1]) : 0) +
                                    ((field[i-1][j-1] < 0) ?
