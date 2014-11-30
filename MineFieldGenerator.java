@@ -18,7 +18,7 @@ public class MineFieldGenerator {
          */
         int minMines = (int)Math.round(0.15 * m * n);
         int maxMines = (m - 1) * (n - 1);
-        int numMines = rgen.nextInt(maxMines - minMines + 1 ) + minMines;
+        int numMines = rgen.nextInt(Math.abs(maxMines - minMines + 1)) + minMines;
 
         while(numMines != 0) {
             field[rgen.nextInt(m)][rgen.nextInt(n)]--;
@@ -41,7 +41,7 @@ public class MineFieldGenerator {
          * Minimum number of 30% of field size as mines 
          */
         int minMines = (int)Math.round(0.15 * m * n);
-        int numMines = rgen.nextInt(maxMines - minMines + 1 ) + minMines;
+        int numMines = rgen.nextInt(Math.abs(maxMines - minMines + 1)) + minMines;
 
         while(numMines != 0) {
             field[rgen.nextInt(m)][rgen.nextInt(n)]--;

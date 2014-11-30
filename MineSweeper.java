@@ -68,14 +68,14 @@ public class MineSweeper extends JFrame implements Serializable {
                                 mines = Integer.parseInt(field3.getText());
                                 valid = true;
                                 
-                                // clear();
-                                // MineSweeper newGame =  new MineSweeper(rows, columns, mines);
-                                // MineSweeper.this.game = newGame.getMineSweeperGame();
-                                // MineSweeper.this.grid = newGame.getMinePane();
-                                // MineSweeper.this.info = newGame.getInfoPane();
-                                // getContentPane().add(MineSweeper.this.grid);
-                                // getContentPane().add(MineSweeper.this.info, BorderLayout.EAST);
-                                // getContentPane().revalidate();
+                                clear();
+                                MineSweeper newGame =  new MineSweeper(rows, columns, mines);
+                                MineSweeper.this.game = newGame.getMineSweeperGame();
+                                MineSweeper.this.grid = newGame.getMinePane();
+                                MineSweeper.this.info = newGame.getInfoPane();
+                                getContentPane().add(MineSweeper.this.grid);
+                                getContentPane().add(MineSweeper.this.info, BorderLayout.EAST);
+                                getContentPane().revalidate();
 
                             } catch (NumberFormatException ex) {
                                 JOptionPane.showMessageDialog(null, "Enter 3 Integers");
