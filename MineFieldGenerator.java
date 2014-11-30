@@ -1,3 +1,5 @@
+import java.awt.*;
+import javax.swing.*;
 import java.lang.Math;
 import java.util.Random;
 
@@ -13,10 +15,10 @@ public class MineFieldGenerator {
         int field[][] = new int[m][n];
 
         /* 
-         * Minimum number of 30% of field size as mines 
+         * Minimum number of 20% of field size as mines 
          * Maximum of (m - 1) * (n - 1)
          */
-        int minMines = (int)Math.round(0.15 * m * n);
+        int minMines = (int)Math.round(0.20 * m * n);
         int maxMines = (m - 1) * (n - 1);
         int numMines = rgen.nextInt(Math.abs(maxMines - minMines + 1)) + minMines;
 
@@ -38,9 +40,9 @@ public class MineFieldGenerator {
         int field[][] = new int[m][n];
 
         /* 
-         * Minimum number of 30% of field size as mines 
+         * Minimum number of 20% of field size as mines 
          */
-        int minMines = (int)Math.round(0.15 * m * n);
+        int minMines = (int)Math.round(0.20 * m * n);
         int numMines = rgen.nextInt(Math.abs(maxMines - minMines + 1)) + minMines;
 
         while(numMines != 0) {
@@ -48,7 +50,7 @@ public class MineFieldGenerator {
             numMines--;
         }
         
-        // fill(field);
+        fill(field);
         return field;
     }
 
@@ -57,7 +59,8 @@ public class MineFieldGenerator {
             for (int j = 0; j < field[i].length; j++) {
                 if(field[i][j] != 0) {
                     continue;
-                } 
+                }
+ 
                 if(i == j && i == 0) { // Top-left corner
                     field[i][j] = (((field[i+1][j] < 0) ? 
                                     Math.abs(field[i+1][j]) : 0) +
@@ -65,7 +68,7 @@ public class MineFieldGenerator {
                                     Math.abs(field[i+1][j+1]) : 0) + 
                                    ((field[i][j+1] < 0) ?
                                     Math.abs(field[i][j+1]) : 0));
-                } else if(i == j && i == field.length -1) { // Bottom-right
+                } else if(i == j && i == field.length - 1) { // Bottom-right
                     field[i][j] = (((field[i-1][j] < 0) ? 
                                     Math.abs(field[i-1][j]) : 0) +
                                    ((field[i-1][j-1] < 0) ?
@@ -97,7 +100,7 @@ public class MineFieldGenerator {
                                     Math.abs(field[i+1][j+1]) : 0) +
                                    ((field[i+1][j] < 0) ?
                                     Math.abs(field[i+1][j]) : 0));
-                } else if(j == field[i].length) { // Right edge
+                } else if(j == field[i].length - 1) { // Right edge
                     field[i][j] = (((field[i-1][j] < 0) ? 
                                     Math.abs(field[i-1][j]) : 0) +
                                    ((field[i-1][j-1] < 0) ?
@@ -119,7 +122,7 @@ public class MineFieldGenerator {
                                     Math.abs(field[i+1][j+1]) : 0) +
                                    ((field[i][j+1] < 0) ?
                                     Math.abs(field[i][j+1]) : 0));
-                } else if(i == field.length) { // Bottom edge
+                } else if(i == field.length - 1) { // Bottom edge
                     field[i][j] = (((field[i][j-1] < 0) ? 
                                     Math.abs(field[i][j-1]) : 0) +
                                    ((field[i-1][j-1] < 0) ?
@@ -155,12 +158,20 @@ public class MineFieldGenerator {
 
     /* For testing purposes */
     public static void main(String[] args) {
-        int f[][] = generate(9,9);
+        JFrame testFrame = new JFrame();
+        JPanel panel = new JPanel(new GridLayout(10,10));
+        int f[][] = generate(10,10);
         for(int i = 0; i < f.length; i++) {
             for(int j = 0; j < f[i].length; j++) {
                 System.out.print(f[i][j] + " |  ");
+                panel.add(new JButton("" + f[i][j]));
             }
             System.out.println();
         }
+
+        testFrame.add(panel);
+        testFrame.setSize(800,600);
+        testFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        testFrame.setVisible(true);
     }
 }
