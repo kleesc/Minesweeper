@@ -10,6 +10,8 @@ public class MineSweeper extends JFrame implements Serializable {
     private MineSweeperGame game;
     private InfoPane info;
     private MinePane grid;
+    
+    int rowsOp = 10, columnsOp = 10, minesOp = 100; // Options
 
     public MineSweeper(int rows, int columns, int mines) {
         init();
@@ -46,8 +48,25 @@ public class MineSweeper extends JFrame implements Serializable {
         JMenuItem itm = new JMenuItem("New Game");
         itm.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    int rows, columns, mines = 0;
+                    if(JOptionPane.showConfirmDialog(null,
+                                                     "New Game: Current game will be lost",
+                                                     "New Game", JOptionPane.YES_NO_OPTION) == 0) {
+                        clear();
+                        update(new MineSweeper(rowsOp, columnsOp, minesOp));
+                        getContentPane().add(MineSweeper.this.grid);
+                        getContentPane().add(MineSweeper.this.info, BorderLayout.EAST);
+                        getContentPane().revalidate();
+                    } else {
+                        
+                    }
+                }
+            });
+        menu.add(itm);
 
+        /* Options */
+        itm = new JMenuItem("Options");
+        itm.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
                     JPanel textPane = new JPanel();
                     JTextField field1 = new JTextField(3);  
                     textPane.add(field1);
@@ -55,30 +74,20 @@ public class MineSweeper extends JFrame implements Serializable {
                     textPane.add(field2);
                     JTextField field3 = new JTextField(3);
                     textPane.add(field3);
-
+                    
                     boolean valid = false;
                     do {
                         int ok = JOptionPane.showConfirmDialog(null, textPane, 
-                                                               "New Game: Current game will be lost",
+                                                               "Options",
                                                                JOptionPane.OK_CANCEL_OPTION);
                         if(ok == JOptionPane.OK_OPTION) {
                             try {
-                                rows = Integer.parseInt(field1.getText());
-                                columns = Integer.parseInt(field2.getText());
-                                mines = Integer.parseInt(field3.getText());
+                                rowsOp = Integer.parseInt(field1.getText());
+                                columnsOp = Integer.parseInt(field2.getText());
+                                minesOp = Integer.parseInt(field3.getText());
                                 valid = true;
-                                
-                                clear();
-                                MineSweeper newGame =  new MineSweeper(rows, columns, mines);
-                                MineSweeper.this.game = newGame.getMineSweeperGame();
-                                MineSweeper.this.grid = newGame.getMinePane();
-                                MineSweeper.this.info = newGame.getInfoPane();
-                                getContentPane().add(MineSweeper.this.grid);
-                                getContentPane().add(MineSweeper.this.info, BorderLayout.EAST);
-                                getContentPane().revalidate();
-
                             } catch (NumberFormatException ex) {
-                                JOptionPane.showMessageDialog(null, "Enter 3 Integers");
+                                JOptionPane.showMessageDialog(null, "Enter 3 Integers: Rows, Columns, MaxMines");
                             } 
                         } else {
                             break;
@@ -104,13 +113,8 @@ public class MineSweeper extends JFrame implements Serializable {
                     if(MineSweeper.load() == null) {
                         JOptionPane.showMessageDialog(null, "Failed to load game");
                     } else {
-                        
-                        getContentPane().remove(grid);
-                        getContentPane().remove(info);
-                        MineSweeper loadedGame = MineSweeper.load();
-                        MineSweeper.this.game = loadedGame.getMineSweeperGame();
-                        MineSweeper.this.info = loadedGame.getInfoPane();
-                        MineSweeper.this.grid = loadedGame.getMinePane();
+                        clear();
+                        update(MineSweeper.load());
                         getContentPane().add(grid);
                         getContentPane().add(info, BorderLayout.EAST);
                         getContentPane().revalidate();
@@ -190,6 +194,12 @@ public class MineSweeper extends JFrame implements Serializable {
 
     public void run() {   
         setVisible(true);
+    }
+
+    public void update(MineSweeper newGame) {
+        this.game = newGame.getMineSweeperGame();
+        this.grid = newGame.getMinePane();
+        this.info = newGame.getInfoPane();
     }
 
     public MineSweeperGame getMineSweeperGame() {
