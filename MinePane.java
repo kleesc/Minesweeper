@@ -7,9 +7,11 @@ import java.io.*;
 public class MinePane extends JPanel implements Serializable {
     private CustomButton grid[][];
     private MineSweeperGame currentGame;
+    private int rows, columns;
 
     public MinePane(MineSweeperGame currentGame) {
-        int rows = currentGame.getRows(), columns = currentGame.getColumns();
+        rows = currentGame.getRows();
+        columns = currentGame.getColumns();
         
         setLayout(new GridLayout(rows, columns));
         this.currentGame = currentGame;
@@ -21,6 +23,7 @@ public class MinePane extends JPanel implements Serializable {
             for(int j = 0; j < mineField[i].length; j++) {
                 grid[i][j] = new CustomButton(i, j, mineField[i][j]);
                 grid[i][j].addActionListener(new ButtonClick());
+                grid[i][j].setText("" + grid[i][j].getValue()); // FOR TESTING
                 add(grid[i][j]);
             }
         }
@@ -29,13 +32,66 @@ public class MinePane extends JPanel implements Serializable {
     public class ButtonClick implements ActionListener {
     	
         public void actionPerformed(ActionEvent e) {
-            System.out.println("test");
-            
             if(e.getSource() instanceof JButton) {
-                JButton btn = (JButton) e.getSource();
-                btn.setBackground(Color.GREEN);
+                CustomButton btn = (CustomButton) e.getSource();
+                // btn.setBackground(Color.GREEN);
+                pressed(btn.getXPos(), btn.getYPos());
             }
         }
+    }
+
+    /*
+     * |---|---|---|
+     * |i-1|i-1|i-1|
+     * |j-1| j |j+1|
+     * |---|---|---|
+     * | i | 0 | i |
+     * |j-1| 0 |j+1|
+     * |---|---|---|
+     * |i+1|i+1|i+1|
+     * |j-1| j |j+1|
+     * |---|---|---|
+     * 
+     */
+    private void pressed(int x, int y) {
+        /* Need to check if revealed else the subroutine will recheck already checked zeros */
+        if (outOfBound(x, y) || grid[x][y].revealed == true) {
+            System.out.println("test");
+            return;
+        }
+
+        /* Open surroundings */
+        if(grid[x][y].getValue() == 0 ) {
+            grid[x][y].setText("" + grid[x][y].getValue());
+            grid[x][y].setBackground(Color.GREEN); // Test
+            grid[x][y].revealed = true;
+
+            /* Top */
+            pressed(x - 1, y);
+            /* Top-Right */
+            pressed(x - 1, y + 1);
+            /* Right */
+            pressed(x, y + 1);
+            /* Bottom-right */
+            pressed(x + 1, y + 1);
+            /* Bottom */
+            pressed(x + 1, y);
+            /* Bottom-left */
+            pressed(x + 1, y - 1);
+            /* Left */
+            pressed(x, y - 1);
+            /* Top-left */
+            pressed(x - 1, y - 1);
+        } else {
+            grid[x][y].setText("" + grid[x][y].getValue());
+            grid[x][y].setBackground(Color.GREEN);
+            grid[x][y].revealed = true;
+            return;
+        }
+    }
+
+    private boolean outOfBound(int x, int y) {
+        return x < 0 || x > rows - 1 || y < 0 || y > columns - 1;
     }
 
     private class CustomButton extends JButton {
@@ -45,6 +101,7 @@ public class MinePane extends JPanel implements Serializable {
          * Wasted too much time before realizing... 
          */
         private int x, y, value;
+        boolean revealed = false;
         
         public CustomButton(int x, int y, int value) {
             super();

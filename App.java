@@ -26,15 +26,6 @@ public class App {
         hlist.add("ken", 1235);
 
 
-        MineSweeperGame game = new MineSweeperGame(10, 10);
-
-        for(int i = 0; i < game.getMineField().length; i++) {
-            for(int j = 0; j < game.getMineField()[i].length; j++) {
-                System.out.print(game.getMineField()[i][j] + " ");
-            }
-            System.out.println();
-        }
-
 
         /* Main */
         MineSweeper ms;
