@@ -124,12 +124,14 @@ public class MineSweeperGame implements Serializable {
     
     public void loadHighscores() {
         // Load Manager from disk if it exists
-        try(
+        try {
             FileInputStream f = new FileInputStream("Highscores.data");
             ObjectInput input = new ObjectInputStream (f);
-            ) {
-                this.scores = (HighscoreList)input.readObject();
-            }
+            this.scores = (HighscoreList)input.readObject();
+
+            f.close();
+            input.close();
+        }
         catch(ClassNotFoundException e) {
             System.out.println("Class not found.");
             // e.printStackTrace();

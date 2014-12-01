@@ -2,8 +2,10 @@ import java.util.*;
 import java.io.*;
 
 public class HighscoreList implements Serializable {
-    private PriorityQueue<Highscore> scores;
-    private Comparator<Highscore> scoreComparator = new Comparator<Highscore>() {
+    private ArrayList<Highscore> scores;
+
+    // Comparator cannot be serialized, hence transient
+    transient private Comparator<Highscore> scoreComparator = new Comparator<Highscore>() {
         @Override
         public int compare(Highscore s1, Highscore s2) {
             return s2.getScore() - s1.getScore();
@@ -11,15 +13,11 @@ public class HighscoreList implements Serializable {
     };
     
     public HighscoreList() {
-        scores = new PriorityQueue<Highscore> (10, scoreComparator);
+        scores = new ArrayList<Highscore> (10);
     }
 
     public void add(String name, int score) {
         this.scores.add(new Highscore(name, score));
-    }
-
-    public Highscore peek() {
-        return this.scores.peek();
     }
 
     public void clear() {
