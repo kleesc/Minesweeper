@@ -3,6 +3,8 @@ import java.awt.GridLayout;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.lang.Math;
+import java.util.Random;
 
 public class MinePane extends JPanel implements Serializable {
     private MineSweeperGame currentGame;
@@ -24,11 +26,15 @@ public class MinePane extends JPanel implements Serializable {
         int mineField[][] = currentGame.getMineField();
         grid = new CustomButton[rows][columns];
 
+        Random rgen = new Random();
+
         for(int i = 0; i < mineField.length; i++) {
             for(int j = 0; j < mineField[i].length; j++) {
                 grid[i][j] = new CustomButton(i, j, mineField[i][j]);
+                grid[i][j].bonus = rgen.nextInt(Math.abs(5000 - 0 + 1)) + 1;
+
                 grid[i][j].addActionListener(new ButtonClick());
-                grid[i][j].setText("" + grid[i][j].getValue()); // FOR TESTING
+                grid[i][j].setText("" +  grid[i][j].getValue());
                 add(grid[i][j]);
             }
         }
@@ -60,7 +66,6 @@ public class MinePane extends JPanel implements Serializable {
     private void pressed(int x, int y) {
         /* Need to check if revealed else the subroutine will recheck already checked zeros */
         if (outOfBound(x, y) || grid[x][y].revealed == true) {
-            System.out.println("test");
             return;
         }
 
@@ -108,18 +113,23 @@ public class MinePane extends JPanel implements Serializable {
                 }
             }
 
-        } else {
+        } else { // Positive non zero click
             grid[x][y].setText("" + grid[x][y].getValue());
             grid[x][y].setBackground(Color.GREEN);
             grid[x][y].revealed = true;
+            System.out.println(grid[x][y].bonus);
 
+            if(grid[x][y].bonus == 5000) {
+                info.updateLives(currentGame.setLives(5000)); // Pseudo Immortality
+            }
+
+            if(grid[x][y].bonus % 3 == 0 && grid[x][y].bonus % 9 == 0 && grid[x][y].bonus % 27 == 0) {
+                info.updateShields(currentGame.addShield()); // Pseudo Add 3 shields
+            }
+         
             /* Score */
             info.updateScore(currentGame.setScore(currentGame.getScore() + 1));
-
-            return;
         }
-
-        
     }
 
     private boolean outOfBound(int x, int y) {
@@ -148,7 +158,8 @@ public class MinePane extends JPanel implements Serializable {
          */
         private int x, y, value;
         boolean revealed = false;
-        
+        int bonus = 0;
+
         public CustomButton(int x, int y, int value) {
             super();
             this.x = x;

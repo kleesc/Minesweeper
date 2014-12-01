@@ -24,6 +24,7 @@ public class InfoPane extends JPanel implements Serializable {
                           currentGame.getColumns());
 
         add(lives);
+        add(shields);
         add(score);
         add(size);
         add(mines);
@@ -50,6 +51,6 @@ public class InfoPane extends JPanel implements Serializable {
     }
 
     public void updateShields(int shields) {
-        this.shields.setText("Score: " + shields);
+        this.shields.setText("Shields: " + shields);
     }
 }
