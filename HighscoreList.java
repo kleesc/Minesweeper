@@ -57,4 +57,14 @@ public class HighscoreList implements Serializable {
             this.name = name;
         }
     }
+
+    public void save() {
+        try {
+            ObjectOutputStream out = 
+                new ObjectOutputStream(new FileOutputStream(new File("Highscores.data")));
+            out.writeObject(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

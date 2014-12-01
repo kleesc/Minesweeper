@@ -1,5 +1,6 @@
 import java.lang.Math;
 import java.io.*;
+import javax.swing.JOptionPane;
 
 public class MineSweeperGame implements Serializable {
     private int mineField[][];
@@ -113,7 +114,12 @@ public class MineSweeperGame implements Serializable {
 
     public boolean gameOver() {
         boolean over = lives == 0;
-        return lives == 0;
+        if (over) {
+            String name = JOptionPane.showInputDialog("Enter your name: ");
+            scores.add(name, score);
+            scores.save();
+        }
+        return over;
     }
     
     public void loadHighscores() {

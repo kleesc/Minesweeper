@@ -1,0 +1,4 @@
+ls | grep .class | xargs rm
+rm Highscores.data
+javac App.java
+java App

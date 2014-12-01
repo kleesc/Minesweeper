@@ -39,7 +39,6 @@ public class MinePane extends JPanel implements Serializable {
         public void actionPerformed(ActionEvent e) {
             if(e.getSource() instanceof JButton) {
                 CustomButton btn = (CustomButton) e.getSource();
-                // btn.setBackground(Color.GREEN);
                 pressed(btn.getXPos(), btn.getYPos());
             }
         }
