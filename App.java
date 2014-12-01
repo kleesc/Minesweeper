@@ -10,23 +10,6 @@ import java.util.*;
 
 public class App {
     public static void main(String[] args) {
-
-        HighscoreList hlist = new HighscoreList();
-        hlist.add("qwe", 3435);
-        hlist.add("kwf", 235);
-        hlist.add("gh", 35);
-        hlist.add("ven", 568);
-        hlist.add("sdn", 10);
-        hlist.add("hgjn", 71235);
-        hlist.add("uie", 903435);
-        hlist.add("ewwewf", 2235);
-        hlist.add("gth", 357);
-        hlist.add("vendr", 5568);
-        hlist.add("j3n", 1670);
-        hlist.add("ken", 1235);
-
-
-
         /* Main */
         MineSweeper ms;
         

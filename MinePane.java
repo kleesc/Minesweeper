@@ -103,8 +103,8 @@ public class MinePane extends JPanel implements Serializable {
                 info.updateShields(currentGame.loseShield());
             } else {
                 info.updateLives(currentGame.loseLife());
-                if(currentGame.gameOver()) {
-
+                if(currentGame.gameOver()) { // Game Over
+                    revealAll();
                 }
             }
 
@@ -124,6 +124,20 @@ public class MinePane extends JPanel implements Serializable {
 
     private boolean outOfBound(int x, int y) {
         return x < 0 || x > rows - 1 || y < 0 || y > columns - 1;
+    }
+
+    private void revealAll() {
+        for(int i = 0; i < grid.length; i++) {
+            for(int j = 0; j < grid[i].length; j++) {
+                grid[i][j].setText("" + grid[i][j].getValue());
+                grid[i][j].revealed = true;
+                if(grid[i][j].getValue() < 0) {
+                    grid[i][j].setBackground(Color.RED);
+                } else {
+                    grid[i][j].setBackground(Color.GREEN);
+                }
+            }
+        }
     }
 
     private class CustomButton extends JButton {

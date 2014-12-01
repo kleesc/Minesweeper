@@ -11,7 +11,7 @@ public class InfoPane extends JPanel implements Serializable {
 
     public InfoPane(MineSweeperGame currentGame) {
         this.currentGame = currentGame;
-        currentGame.getTopScores();
+        HighscoreList.Highscore list[] = currentGame.getTopScores();
         
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         
@@ -22,12 +22,15 @@ public class InfoPane extends JPanel implements Serializable {
         size = new JLabel("Size: " + 
                           currentGame.getRows() + " x " +
                           currentGame.getColumns());
-        
 
         add(lives);
         add(score);
         add(size);
         add(mines);
+
+        for(HighscoreList.Highscore x : currentGame.getTopScores()) {
+            add(new JLabel(x.getName() + " " + x.getScore()));
+        }
     }
     
     public void updateLives(int n) {

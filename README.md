@@ -24,6 +24,5 @@ INSTRUCTIONS
 
 TODO
 ====
-* Check game termination conditions
-* Save HighscoreList after game ends
-* MessageDialog after game is over AND/OR reveal all Jbuttons
+* Save HighscoreList after game ends (Only works once, after the second time, there is an exception)
+* Add random shield and other bonuses in grid ( Property in CustomButton )
