@@ -5,16 +5,21 @@ import java.awt.event.*;
 import java.io.*;
 
 public class MinePane extends JPanel implements Serializable {
-    private CustomButton grid[][];
     private MineSweeperGame currentGame;
+    private InfoPane info;
+
+    private CustomButton grid[][];
     private int rows, columns;
 
-    public MinePane(MineSweeperGame currentGame) {
+
+    public MinePane(MineSweeperGame currentGame, InfoPane info) {
+        this.currentGame = currentGame;
+        this.info = info;
+
         rows = currentGame.getRows();
         columns = currentGame.getColumns();
         
         setLayout(new GridLayout(rows, columns));
-        this.currentGame = currentGame;
 
         int mineField[][] = currentGame.getMineField();
         grid = new CustomButton[rows][columns];
@@ -60,12 +65,15 @@ public class MinePane extends JPanel implements Serializable {
             return;
         }
 
-        /* Open surroundings */
+        /* Open surroundings on ZERO */
         if(grid[x][y].getValue() == 0 ) {
             grid[x][y].setText("" + grid[x][y].getValue());
             grid[x][y].setBackground(Color.GREEN); // Test
             grid[x][y].revealed = true;
 
+            /* Score */
+            info.updateScore(currentGame.setScore(currentGame.getScore() + 1));
+            
             /* Top */
             pressed(x - 1, y);
             /* Top-Right */
@@ -82,12 +90,37 @@ public class MinePane extends JPanel implements Serializable {
             pressed(x, y - 1);
             /* Top-left */
             pressed(x - 1, y - 1);
+
+        } else if(grid[x][y].getValue() < 0) { // If bomb is clicked
+            grid[x][y].setText("*");
+            grid[x][y].setBackground(Color.RED);
+            grid[x][y].revealed = true;
+
+            /* Score */
+            info.updateScore(currentGame.setScore(currentGame.getScore() - 1));
+
+            /* Lives */
+            if(currentGame.getShields() > 0) {
+                info.updateShields(currentGame.loseShield());
+            } else {
+                info.updateLives(currentGame.loseLife());
+                if(currentGame.gameOver()) {
+
+                }
+            }
+
         } else {
             grid[x][y].setText("" + grid[x][y].getValue());
             grid[x][y].setBackground(Color.GREEN);
             grid[x][y].revealed = true;
+
+            /* Score */
+            info.updateScore(currentGame.setScore(currentGame.getScore() + 1));
+
             return;
         }
+
+        
     }
 
     private boolean outOfBound(int x, int y) {

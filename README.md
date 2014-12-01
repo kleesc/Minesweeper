@@ -24,9 +24,6 @@ INSTRUCTIONS
 
 TODO
 ====
-* FIX MINEFIELD GENERATOR: For some reason, zeros appear where they shouldn't.
-* The "Expand on click-on-zero doesn't work how it's supposed too, it should also be recursive.
-
-
-Can't think of a new expand on zero method that isn't just a retread of the first one, and I would say it is recrusive
-because the method is calling itself.
+* Check game termination conditions
+* Save HighscoreList after game ends
+* MessageDialog after game is over AND/OR reveal all Jbuttons

@@ -32,7 +32,7 @@ public class HighscoreList implements Serializable {
         return topScores;
     }
 
-    class Highscore {
+    class Highscore implements Serializable {
         private String name;
         private int score;
         

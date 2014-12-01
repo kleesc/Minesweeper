@@ -5,47 +5,84 @@ public class MineSweeperGame implements Serializable {
     private int mineField[][];
     private int lives;
     private int score;
+    private int shields;
+
+    private HighscoreList scores;
 
     public MineSweeperGame() {
         this.lives = 3;
         this.score = 0;
+        this.shields = 0;
         this.mineField = MineFieldGenerator.generate(10, 10);
+        this.scores = new HighscoreList();
+
+        loadHighscores();
     }
 
     public MineSweeperGame(int rows, int columns) {
         this.lives = 3;
         this.score = 0;
+        this.shields = 0;
         this.mineField = MineFieldGenerator.generate(rows, columns);
+        this.scores = new HighscoreList();
+
+        loadHighscores();
     }
 
     public MineSweeperGame(int rows, int columns, int maxMines) {
         this.lives = 3;
         this.score = 0;
+        this.shields = 0;
         this.mineField = MineFieldGenerator.generate(rows, columns, maxMines);
+        this.scores = new HighscoreList();
+
+        loadHighscores();
     }
 
     public MineSweeperGame(MineSweeperGame game) {
         this.lives = game.getLives();
         this.score = game.getScore();
+        this.shields = game.getShields();
         this.mineField = game.getMineField();
+        this.scores = new HighscoreList();
+
+        loadHighscores();
     }
 
     public int getScore() {
         return this.score;
     }
 
-    public void setScore(int score) {
+    public int setScore(int score) {
         this.score = score;
+        return score;
     }
     
     public int getLives() {
         return this.lives;
     }
 
-    public void setLives(int lives) {
+    public int setLives(int lives) {
         this.score = lives;
+        return lives;
     }
 
+    public int loseLife() {
+        return --this.lives;
+    }
+
+    public int getShields() {
+        return this.shields;
+    }
+
+    public int addShield() {
+        this.shields += 3;
+        return shields;
+    }
+
+    public int loseShield() {
+        return --this.shields;
+    }
     public int[][] getMineField() {
         return mineField;
     }
@@ -74,14 +111,33 @@ public class MineSweeperGame implements Serializable {
         return Math.abs(mines);
     }
 
-    public int loseLife() {
-        return --this.lives;
+    public boolean gameOver() {
+        boolean over = lives == 0;
+        return lives == 0;
     }
-
-    public int addShield() {
-        this.lives += 3;
-        return lives;
-    }
-
     
+    public void loadHighscores() {
+        // Load Manager from disk if it exists
+        try(
+            FileInputStream f = new FileInputStream("Highscores.data");
+            ObjectInput input = new ObjectInputStream (f);
+            ) {
+                this.scores = (HighscoreList)input.readObject();
+            }
+        catch(ClassNotFoundException e) {
+            System.out.println("Class not found.");
+            // e.printStackTrace();
+        }
+        catch(FileNotFoundException e) {
+            System.out.println("No previous scores found.");
+            // e.printStackTrace();
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public HighscoreList.Highscore[] getTopScores(){
+        return scores.getTopScores();
+    }
 }

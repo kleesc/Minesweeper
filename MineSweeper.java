@@ -18,7 +18,7 @@ public class MineSweeper extends JFrame implements Serializable {
 
         game = new MineSweeperGame(rows, columns, mines);
         info = new InfoPane(game);
-        grid = new MinePane(game);
+        grid = new MinePane(game, info);
 
         getContentPane().add(grid);
         getContentPane().add(info, BorderLayout.EAST);
@@ -29,7 +29,7 @@ public class MineSweeper extends JFrame implements Serializable {
         
         game = new MineSweeperGame(rows, columns);
         info = new InfoPane(game);
-        grid = new MinePane(game);
+        grid = new MinePane(game, info);
         
         getContentPane().add(grid);
         getContentPane().add(info, BorderLayout.EAST);
@@ -40,7 +40,7 @@ public class MineSweeper extends JFrame implements Serializable {
 
         game = new MineSweeperGame();
         info = new InfoPane(game);
-        grid = new MinePane(game);
+        grid = new MinePane(game, info);
 
         getContentPane().add(grid);
         getContentPane().add(info, BorderLayout.EAST);
