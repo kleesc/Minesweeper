@@ -20,9 +20,9 @@ INSTRUCTIONS
 
 
 ## To clone the repo
-* git clone https://kleesc@bitbucket.org/kleesc/comp249-lab3.git
+* git clone https://kleesc@bitbucket.org/kleesc/comp249-minesweeper.git
 
 TODO
 ====
 * Save HighscoreList after game ends (Only works once, after the second time, there is an exception)
-* Add random shield and other bonuses in grid ( Property in CustomButton )
+* Game state serialization in JMenuBar
